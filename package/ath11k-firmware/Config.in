@@ -1,0 +1,14 @@
+config BR2_PACKAGE_ATH11K_FIRMWARE
+	bool "ath11k-firmware"
+	help
+	  This package enables access to firmware required for
+	  ath11k supported devices to operate.
+
+if BR2_PACKAGE_ATH11K_FIRMWARE
+
+config BR2_PACKAGE_ATH11K_FIRMWARE_IPQ8074
+	bool "IPQ8074 firmware"
+	help
+	  Firmware files for IPQ807x SoC series.
+
+endif
