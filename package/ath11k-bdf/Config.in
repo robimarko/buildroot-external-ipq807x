@@ -1,0 +1,14 @@
+config BR2_PACKAGE_ATH11K_BDF
+	bool "ath11k-bdf"
+	help
+	  This package enables access to BDF required for
+	  ath11k supported devices to operate.
+
+if BR2_PACKAGE_ATH11K_BDF
+
+config BR2_PACKAGE_ATH11K_BDF_301W
+	bool "Qnap 301W BDF"
+	help
+	  BDF file for Qnap 301W.
+
+endif
