@@ -46,7 +46,8 @@ caldata_extract() {
 
 FIRMWARE="ath11k/IPQ8074/hw2.0/cal-ahb-c000000.wifi.bin"
 case "$board" in
-	qnap,301w)
+	qnap,301w|\
+        xiaomi,ax9000)
 		caldata_extract "0:art" 0x1000 0x20000
 		;;
 	*)

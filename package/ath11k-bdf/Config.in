@@ -6,9 +6,19 @@ config BR2_PACKAGE_ATH11K_BDF
 
 if BR2_PACKAGE_ATH11K_BDF
 
+choice
+	prompt "Target board"
+
 config BR2_PACKAGE_ATH11K_BDF_301W
 	bool "Qnap 301W BDF"
 	help
 	  BDF file for Qnap 301W.
+
+config BR2_PACKAGE_ATH11K_BDF_AX9000
+	bool "Xiaomi AX9000 BDF"
+	help
+	  BDF file for Xiaomi AX9000.
+
+endchoice
 
 endif
