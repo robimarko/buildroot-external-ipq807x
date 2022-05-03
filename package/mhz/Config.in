@@ -1,0 +1,4 @@
+config BR2_PACKAGE_MHZ
+	bool "CPU frequency measurement utility"
+	help
+	  CPU frequency measurement utility
