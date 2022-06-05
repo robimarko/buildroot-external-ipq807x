@@ -1,0 +1,5 @@
+config BR2_PACKAGE_MDIO_TOOLS
+	bool "mdio-tools"
+	select BR2_PACKAGE_LIBMNL
+	help
+	  Low-level debug tools for MDIO devices
