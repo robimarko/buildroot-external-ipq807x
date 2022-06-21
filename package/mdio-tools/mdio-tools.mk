@@ -9,4 +9,7 @@ MDIO_TOOLS_SITE = https://github.com/wkz/mdio-tools/releases/download/$(MDIO_TOO
 MDIO_TOOLS_LICENSE = GPL-2.0-only
 MDIO_TOOLS_DEPENDENCIES = libmnl
 
+MDIO_TOOLS_MODULE_SUBDIRS = kernel
+
+$(eval $(kernel-module))
 $(eval $(autotools-package))
