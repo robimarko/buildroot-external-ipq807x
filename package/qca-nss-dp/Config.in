@@ -1,0 +1,9 @@
+comment "NSS-DP needs a Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL
+
+config BR2_PACKAGE_QCA_NSS_DP
+	bool "Qualcomm NSS-DP"
+	depends on BR2_LINUX_KERNEL
+	depends on BR2_PACKAGE_QCA_SSDK
+	help
+	  This package provides Qualcomm NSS dataplane ethernet driver for Qualcom SoCs.
