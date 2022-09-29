@@ -1,0 +1,9 @@
+comment "SSDK needs a Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL
+
+config BR2_PACKAGE_QCA_SSDK
+	bool "Qualcomm SSDK"
+	depends on BR2_LINUX_KERNEL
+	help
+	  This package provides Qualcomm SSDK which is a switch/PHY driver
+	  for Qualcomm SoC-s.
