@@ -20,7 +20,8 @@ QCA_SSDK_MODULE_MAKE_OPTS = \
 	CHIP_TYPE=HPPE \
 	PTP_FEATURE=disable \
 	SWCONFIG_FEATURE=disable \
-	EXTRA_CFLAGS=-fno-stack-protector
+	EXTRA_CFLAGS=-fno-stack-protector \
+	INSTALL_MOD_PATH=$(TARGET_DIR)
 
 define QCA_SSDK_INSTALL_STAGING_HEADERS
 	$(INSTALL) -d $(STAGING_DIR)/usr/include/qca-ssdk
@@ -42,8 +43,8 @@ define QCA_SSDK_INSTALL_MOD_SYM
 endef
 QCA_SSDK_POST_BUILD_HOOKS += QCA_SSDK_INSTALL_STAGING_HEADERS QCA_SSDK_INSTALL_MOD_SYM
 
-define QCA_SSDK_INSTALL_TARGET_CMDS
-	$(INSTALL) -D $(@D)/build/bin/qca-ssdk.ko $(TARGET_DIR)/lib/modules/qca-ssdk.ko
-endef
+#define QCA_SSDK_INSTALL_TARGET_CMDS
+#	$(INSTALL) -D $(@D)/build/bin/qca-ssdk.ko $(TARGET_DIR)/lib/modules/qca-ssdk.ko
+#endef
 
 $(eval $(generic-package))
