@@ -1,0 +1,28 @@
+From 396fccada58171d92a3832ef85780838399408d2 Mon Sep 17 00:00:00 2001
+From: Robert Marko <robimarko@gmail.com>
+Date: Thu, 29 Sep 2022 10:40:34 +0200
+Subject: [PATCH] ssdk-shell: include <bsd/string.h>
+
+SSDK shell uses strlcat and like which are not in glibc, so include libbsd
+header for those implementations.
+
+Signed-off-by: Robert Marko <robimarko@gmail.com>
+---
+ include/sal/os/linux_user/aos_mem_pvt.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/sal/os/linux_user/aos_mem_pvt.h b/include/sal/os/linux_user/aos_mem_pvt.h
+index 281e65d..4be184d 100755
+--- a/include/sal/os/linux_user/aos_mem_pvt.h
++++ b/include/sal/os/linux_user/aos_mem_pvt.h
+@@ -17,6 +17,7 @@
+ 
+ #include <stdlib.h>
+ #include <string.h>
++#include <bsd/string.h>
+ 
+ static inline void *__aos_mem_alloc(aos_size_t size)
+ {
+-- 
+2.37.3
+
