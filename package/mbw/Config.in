@@ -1,5 +1,0 @@
-config BR2_PACKAGE_MBW
-	bool "Memory Bandwidth Benchmark"
-	help
-	  MBW determines the "copy" memory bandwidth
-	  available to userspace programs.
