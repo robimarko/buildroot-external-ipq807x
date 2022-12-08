@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MHZ_VERSION = d1ed90e3523ab0300d6e7960eaaa49ef8c41845d
+MHZ_VERSION = 6ec38cbb1371d20078a7a5059dd9faa5b281b2d9
 MHZ_SITE = https://github.com/wtarreau/mhz.git
 MHZ_SITE_METHOD = git
 
