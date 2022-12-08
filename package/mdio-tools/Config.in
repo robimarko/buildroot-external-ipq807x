@@ -1,9 +1,0 @@
-comment "mdio-tools needs a Linux kernel to be built"
-	depends on !BR2_LINUX_KERNEL
-
-config BR2_PACKAGE_MDIO_TOOLS
-	bool "mdio-tools"
-	depends on BR2_LINUX_KERNEL
-	select BR2_PACKAGE_LIBMNL
-	help
-	  Low-level debug tools for MDIO devices
