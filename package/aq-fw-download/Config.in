@@ -1,0 +1,5 @@
+config BR2_PACKAGE_AQ_FW_DOWNLOAD
+	bool "Aquantia FW downloader utitlity"
+	select BR2_PACKAGE_LIBBSD
+	help
+	  Aquantia FW downloader utitlity
