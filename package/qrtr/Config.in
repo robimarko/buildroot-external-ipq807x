@@ -1,0 +1,4 @@
+config BR2_PACKAGE_QRTR
+	bool "Qualcomm QRTR tools"
+	help
+	  Tools for debugging QRTR
