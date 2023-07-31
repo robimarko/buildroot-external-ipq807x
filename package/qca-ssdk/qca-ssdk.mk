@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QCA_SSDK_VERSION = 628b22bc3d5ee81414b75ab3de6a255c82754dec
+QCA_SSDK_VERSION = 74caf88aa3b6793c300f676e4fb1c62da7507be9
 QCA_SSDK_SITE = https://git.codelinaro.org/clo/qsdk/oss/lklm/qca-ssdk.git
 QCA_SSDK_SITE_METHOD = git
 QCA_SSDK_LICENSE = Dual BSD/GPL
@@ -23,6 +23,8 @@ QCA_SSDK_MODULE_MAKE_OPTS = \
 	EXTRA_CFLAGS=-fno-stack-protector \
 	INSTALL_MOD_PATH=$(TARGET_DIR)
 
+LNX_CONFIG_OPTS = LNX_MAKEOPTS='$(LINUX_MAKE_FLAGS)' MODULE_TYPE=KSLIB modules
+
 define QCA_SSDK_INSTALL_STAGING_HEADERS
 	$(INSTALL) -d $(STAGING_DIR)/usr/include/qca-ssdk
 	cp -rf $(@D)/include/api $(STAGING_DIR)/usr/include/qca-ssdk
@@ -35,7 +37,7 @@ define QCA_SSDK_INSTALL_STAGING_HEADERS
 endef
 
 define QCA_SSDK_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(MAKE1) -C $(@D) $(QCA_SSDK_MODULE_MAKE_OPTS)
+	$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(MAKE1) -C $(@D) $(QCA_SSDK_MODULE_MAKE_OPTS) $(LNX_CONFIG_OPTS)
 endef
 
 define QCA_SSDK_INSTALL_MOD_SYM
