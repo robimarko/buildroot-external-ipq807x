@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QCA_NSS_DP_VERSION = 72e9ec4187414461cbcf6ccff100e8b5ebe5f40b
+QCA_NSS_DP_VERSION = fa67464466f69f00967cc373d1bdd6025f57eb89
 QCA_NSS_DP_SITE = https://git.codelinaro.org/clo/qsdk/oss/lklm/nss-dp.git
 QCA_NSS_DP_SITE_METHOD = git
 QCA_NSS_DP_LICENSE = Dual BSD/GPL

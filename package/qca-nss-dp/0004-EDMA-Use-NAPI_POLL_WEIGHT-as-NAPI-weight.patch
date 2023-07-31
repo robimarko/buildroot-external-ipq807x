@@ -1,7 +1,7 @@
-From 44a30d94abcbb10aacc21db29be212518a6b1bf7 Mon Sep 17 00:00:00 2001
+From 158032d3d4e5089afa2aa38c27c6e222ac427820 Mon Sep 17 00:00:00 2001
 From: Robert Marko <robimarko@gmail.com>
 Date: Thu, 20 May 2021 14:57:46 +0200
-Subject: [PATCH] EDMA: Use NAPI_POLL_WEIGHT as NAPI weight
+Subject: [PATCH 4/9] EDMA: Use NAPI_POLL_WEIGHT as NAPI weight
 
 Currently a weight of 100 is used by the EDMA, according
 to upstream max of 64 should be used and that is used for
@@ -18,9 +18,11 @@ Signed-off-by: Robert Marko <robimarko@gmail.com>
  hal/dp_ops/edma_dp/edma_v1/edma_data_plane.h | 1 -
  2 files changed, 1 insertion(+), 2 deletions(-)
 
+diff --git a/hal/dp_ops/edma_dp/edma_v1/edma_data_plane.c b/hal/dp_ops/edma_dp/edma_v1/edma_data_plane.c
+index 2ef0aa1..37417f5 100644
 --- a/hal/dp_ops/edma_dp/edma_v1/edma_data_plane.c
 +++ b/hal/dp_ops/edma_dp/edma_v1/edma_data_plane.c
-@@ -837,7 +837,7 @@ static int edma_register_netdevice(struc
+@@ -845,7 +845,7 @@ static int edma_register_netdevice(struct net_device *netdev, uint32_t macid)
  	 */
  	if (!edma_hw.napi_added) {
  		netif_napi_add(netdev, &edma_hw.napi, edma_napi,
@@ -29,6 +31,8 @@ Signed-off-by: Robert Marko <robimarko@gmail.com>
  		/*
  		 * Register the interrupt handlers and enable interrupts
  		 */
+diff --git a/hal/dp_ops/edma_dp/edma_v1/edma_data_plane.h b/hal/dp_ops/edma_dp/edma_v1/edma_data_plane.h
+index 0921e96..0b28fe8 100644
 --- a/hal/dp_ops/edma_dp/edma_v1/edma_data_plane.h
 +++ b/hal/dp_ops/edma_dp/edma_v1/edma_data_plane.h
 @@ -26,7 +26,6 @@
@@ -39,3 +43,6 @@ Signed-off-by: Robert Marko <robimarko@gmail.com>
  #define EDMA_START_GMACS		NSS_DP_HAL_START_IFNUM
  #define EDMA_MAX_GMACS			NSS_DP_HAL_MAX_PORTS
  #define EDMA_TX_PKT_MIN_SIZE		33	/* IPQ807x EDMA needs a minimum packet size of 33 bytes */
+-- 
+2.41.0
+

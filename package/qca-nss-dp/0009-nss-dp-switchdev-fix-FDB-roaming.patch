@@ -1,7 +1,7 @@
-From d16102cad769f430144ca8094d928762b445e9b0 Mon Sep 17 00:00:00 2001
+From 25ca3308edb67aa0c6c70b83edf0e22b8ae7533f Mon Sep 17 00:00:00 2001
 From: Robert Marko <robimarko@gmail.com>
-Date: Fri, 18 Mar 2022 22:02:01 +0100
-Subject: [PATCH] switchdev: fix FDB roaming
+Date: Thu, 29 Jun 2023 13:52:58 +0200
+Subject: [PATCH 9/9] nss-dp: switchdev: fix FDB roaming
 
 Try and solve the roaming issue by trying to replicate what NSS bridge
 module is doing, but by utilizing switchdev FDB notifiers instead of
@@ -17,12 +17,14 @@ notification provided MAC adress existing FDB entry gets removed.
 
 Signed-off-by: Robert Marko <robimarko@gmail.com>
 ---
- nss_dp_switchdev.c | 61 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 61 insertions(+)
+ nss_dp_switchdev.c | 73 +++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 72 insertions(+), 1 deletion(-)
 
+diff --git a/nss_dp_switchdev.c b/nss_dp_switchdev.c
+index c31fbb5..0bc28ce 100644
 --- a/nss_dp_switchdev.c
 +++ b/nss_dp_switchdev.c
-@@ -24,6 +24,8 @@
+@@ -29,6 +29,8 @@
  #include "nss_dp_dev.h"
  #include "fal/fal_stp.h"
  #include "fal/fal_ctrlpkt.h"
@@ -31,10 +33,18 @@ Signed-off-by: Robert Marko <robimarko@gmail.com>
  
  #define NSS_DP_SWITCH_ID		0
  #define NSS_DP_SW_ETHTYPE_PID		0 /* PPE ethtype profile ID for slow protocols */
-@@ -348,10 +350,64 @@ static int nss_dp_switchdev_event(struct
- 	return NOTIFY_DONE;
- }
+@@ -521,7 +523,76 @@ static struct notifier_block *nss_dp_sw_ev_nb = &nss_dp_switchdev_notifier_nb;
  
+ #else
+ 
+-static struct notifier_block *nss_dp_sw_ev_nb;
++/*
++ * nss_dp_switchdev_fdb_del_event
++ *
++ * Used for EDMA v1 to remove old MAC in order to preventing having
++ * duplicate MAC entries in FDB thus and avoid roaming issues.
++ */
++
 +static int nss_dp_switchdev_fdb_del_event(struct net_device *netdev,
 +					  struct switchdev_notifier_fdb_info *fdb_info)
 +{
@@ -65,8 +75,14 @@ Signed-off-by: Robert Marko <robimarko@gmail.com>
 +	return notifier_from_errno(rv);
 +}
 +
-+static int nss_dp_fdb_switchdev_event(struct notifier_block *nb,
-+				      unsigned long event, void *ptr)
++/*
++ * nss_dp_switchdev_event_nb
++ *
++ * Non blocking switchdev event for netdevice.
++ * Used for EDMA v1 to remove old MAC and avoid roaming issues.
++ */
++static int nss_dp_switchdev_event_nb(struct notifier_block *unused,
++		unsigned long event, void *ptr)
 +{
 +	struct net_device *dev = switchdev_notifier_info_to_dev(ptr);
 +
@@ -80,31 +96,21 @@ Signed-off-by: Robert Marko <robimarko@gmail.com>
 +	switch (event) {
 +	case SWITCHDEV_FDB_DEL_TO_DEVICE:
 +		return nss_dp_switchdev_fdb_del_event(dev, ptr);
++	default:
++		netdev_dbg(dev, "Switchdev event %lu is not supported\n", event);
 +	}
 +
 +	return NOTIFY_DONE;
 +}
 +
- static struct notifier_block nss_dp_switchdev_notifier = {
- 	.notifier_call = nss_dp_switchdev_event,
- };
- 
-+static struct notifier_block nss_dp_switchdev_fdb_notifier = {
-+	.notifier_call = nss_dp_fdb_switchdev_event,
++static struct notifier_block nss_dp_switchdev_notifier_nb = {
++	.notifier_call = nss_dp_switchdev_event_nb,
 +};
 +
- static bool switch_init_done;
++static struct notifier_block *nss_dp_sw_ev_nb = &nss_dp_switchdev_notifier_nb;
  
  /*
-@@ -366,6 +422,11 @@ void nss_dp_switchdev_setup(struct net_d
- 		return;
- 	}
- 
-+	err = register_switchdev_notifier(&nss_dp_switchdev_fdb_notifier);
-+	if (err) {
-+		netdev_dbg(dev, "%px:Failed to register switchdev FDB notifier\n", dev);
-+	}
-+
- 	err = register_switchdev_blocking_notifier(&nss_dp_switchdev_notifier);
- 	if (err) {
- 		netdev_dbg(dev, "%px:Failed to register switchdev notifier\n", dev);
+  * nss_dp_bridge_attr_set()
+-- 
+2.41.0
+
