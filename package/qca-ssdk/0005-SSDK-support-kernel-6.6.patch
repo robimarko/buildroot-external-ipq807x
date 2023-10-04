@@ -1,9 +1,9 @@
 From d9744da6587b0c74194a299bec03215f5c142314 Mon Sep 17 00:00:00 2001
 From: Robert Marko <robimarko@gmail.com>
 Date: Mon, 31 Jul 2023 13:55:49 +0200
-Subject: [PATCH 5/6] SSDK: support kernel 6.5
+Subject: [PATCH 5/6] SSDK: support kernel 6.6
 
-Identify and configure for kernel 6.5.
+Identify and configure for kernel 6.6.
 This is basically always a moving target for Buildroot.
 
 Signed-off-by: Robert Marko <robimarko@gmail.com>
@@ -22,8 +22,8 @@ index 1cf78f7b..e90105fd 100755
  
 -ifeq ($(KVER),$(filter 6.1%,$(KVER)))
 -	OS_VER=6_1
-+ifeq ($(KVER),$(filter 6.5%,$(KVER)))
-+	OS_VER=6_5
++ifeq ($(KVER),$(filter 6.6%,$(KVER)))
++	OS_VER=6_6
  endif
  ifeq ($(KVER), 3.4.0)
  	OS_VER=3_4
@@ -36,7 +36,7 @@ index 53e535bf..f67c8995 100755
    endif
  
 -  ifeq ($(OS_VER),$(filter 5_4 6_1, $(OS_VER)))
-+  ifeq ($(OS_VER),$(filter 5_4 6_5, $(OS_VER)))
++  ifeq ($(OS_VER),$(filter 5_4 6_6, $(OS_VER)))
        ifeq ($(ARCH), arm64)
            KASAN_OPTION += -DKASAN_SHADOW_SCALE_SHIFT=$(KASAN_SHADOW_SCALE_SHIFT)
         endif
@@ -45,7 +45,7 @@ index 53e535bf..f67c8995 100755
    endif
  
 -  ifeq ($(OS_VER),$(filter 4_4 5_4 6_1, $(OS_VER)))
-+  ifeq ($(OS_VER),$(filter 4_4 5_4 6_5, $(OS_VER)))
++  ifeq ($(OS_VER),$(filter 4_4 5_4 6_6, $(OS_VER)))
                  MODULE_CFLAG += -DKVER34
                  MODULE_CFLAG += -DKVER32
              MODULE_CFLAG += -DLNX26_22
