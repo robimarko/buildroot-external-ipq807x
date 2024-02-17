@@ -1,7 +1,7 @@
 From 5b05b1d7a2d2001d9711856608f61abaf7b9a9a5 Mon Sep 17 00:00:00 2001
 From: Alexandru Gagniuc <mr.nuke.me@gmail.com>
 Date: Fri, 23 Jun 2023 13:34:56 +0200
-Subject: [PATCH 6/9] nss_dp_main: Use a 'phy-handle' property to connect to
+Subject: [PATCH 6/8] nss_dp_main: Use a 'phy-handle' property to connect to
  the PHY
 
 The original method of connecting a PHY to the ethernet controller
@@ -24,8 +24,6 @@ Signed-off-by: Robert Marko <robimarko@gmail.com>
  nss_dp_main.c        | 91 +++++++-------------------------------------
  2 files changed, 14 insertions(+), 82 deletions(-)
 
-diff --git a/include/nss_dp_dev.h b/include/nss_dp_dev.h
-index 508b0d3..5a8c0f7 100644
 --- a/include/nss_dp_dev.h
 +++ b/include/nss_dp_dev.h
 @@ -202,13 +202,10 @@ struct nss_dp_dev {
@@ -43,11 +41,9 @@ index 508b0d3..5a8c0f7 100644
  	uint32_t link_state;		/* Current link state */
  	uint32_t pause;			/* Current flow control settings */
  
-diff --git a/nss_dp_main.c b/nss_dp_main.c
-index b276c83..d2fc47f 100644
 --- a/nss_dp_main.c
 +++ b/nss_dp_main.c
-@@ -418,7 +418,7 @@ static int nss_dp_open(struct net_device *netdev)
+@@ -418,7 +418,7 @@ static int nss_dp_open(struct net_device
  
  	netif_start_queue(netdev);
  
@@ -56,7 +52,7 @@ index b276c83..d2fc47f 100644
  		/* Notify data plane link is up */
  		if (dp_priv->data_plane_ops->link_state(dp_priv->dpc, 1)) {
  			netdev_dbg(netdev, "Data plane set link failed\n");
-@@ -615,6 +615,12 @@ static int32_t nss_dp_of_get_pdata(struct device_node *np,
+@@ -615,6 +615,12 @@ static int32_t nss_dp_of_get_pdata(struc
  		return -EFAULT;
  	}
  
@@ -69,7 +65,7 @@ index b276c83..d2fc47f 100644
  	if (of_property_read_u32(np, "qcom,mactype", &hal_pdata->mactype)) {
  		pr_err("%s: error reading mactype\n", np->name);
  		return -EFAULT;
-@@ -635,18 +641,6 @@ static int32_t nss_dp_of_get_pdata(struct device_node *np,
+@@ -635,18 +641,6 @@ static int32_t nss_dp_of_get_pdata(struc
  		return -EFAULT;
  #endif
  
@@ -88,7 +84,7 @@ index b276c83..d2fc47f 100644
  #if (LINUX_VERSION_CODE < KERNEL_VERSION(6, 1, 0))
  	maddr = (uint8_t *)of_get_mac_address(np);
  #if (LINUX_VERSION_CODE > KERNEL_VERSION(5, 4, 0))
-@@ -695,56 +689,6 @@ static int32_t nss_dp_of_get_pdata(struct device_node *np,
+@@ -695,56 +689,6 @@ static int32_t nss_dp_of_get_pdata(struc
  	return 0;
  }
  
@@ -145,7 +141,7 @@ index b276c83..d2fc47f 100644
  #ifdef CONFIG_NET_SWITCHDEV
  /*
   * nss_dp_is_phy_dev()
-@@ -803,7 +747,6 @@ static int32_t nss_dp_probe(struct platform_device *pdev)
+@@ -803,7 +747,6 @@ static int32_t nss_dp_probe(struct platf
  	struct device_node *np = pdev->dev.of_node;
  	struct nss_gmac_hal_platform_data gmac_hal_pdata;
  	int32_t ret = 0;
@@ -153,7 +149,7 @@ index b276c83..d2fc47f 100644
  #if defined(NSS_DP_PPE_SUPPORT)
  	uint32_t vsi_id;
  	fal_port_t port_id;
-@@ -880,22 +823,14 @@ static int32_t nss_dp_probe(struct platform_device *pdev)
+@@ -880,22 +823,14 @@ static int32_t nss_dp_probe(struct platf
  
  	dp_priv->drv_flags |= NSS_DP_PRIV_FLAG(INIT_DONE);
  
@@ -182,6 +178,3 @@ index b276c83..d2fc47f 100644
  			goto phy_setup_fail;
  		}
  	}
--- 
-2.41.0
-

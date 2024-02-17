@@ -1,7 +1,7 @@
 From c2df713569fe3bb671d1444c7bf758681081053c Mon Sep 17 00:00:00 2001
 From: Robert Marko <robimarko@gmail.com>
 Date: Thu, 23 Jun 2022 14:18:50 +0200
-Subject: [PATCH 7/9] nss-dp: edma-v1: use NAPI GRO by default
+Subject: [PATCH 7/8] nss-dp: edma-v1: use NAPI GRO by default
 
 Utilize napi_gro_receive instead of plain netif_receive_skb on EDMA v1.
 
@@ -18,8 +18,6 @@ Signed-off-by: Robert Marko <robimarko@gmail.com>
  hal/dp_ops/edma_dp/edma_v1/edma_tx_rx.c      |  8 ++++++--
  2 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/hal/dp_ops/edma_dp/edma_v1/edma_data_plane.c b/hal/dp_ops/edma_dp/edma_v1/edma_data_plane.c
-index 9b65fa9..df1158f 100644
 --- a/hal/dp_ops/edma_dp/edma_v1/edma_data_plane.c
 +++ b/hal/dp_ops/edma_dp/edma_v1/edma_data_plane.c
 @@ -597,10 +597,12 @@ drop:
@@ -39,11 +37,9 @@ index 9b65fa9..df1158f 100644
  }
  
  /* TODO - check if this is needed */
-diff --git a/hal/dp_ops/edma_dp/edma_v1/edma_tx_rx.c b/hal/dp_ops/edma_dp/edma_v1/edma_tx_rx.c
-index 5780a30..a002a79 100644
 --- a/hal/dp_ops/edma_dp/edma_v1/edma_tx_rx.c
 +++ b/hal/dp_ops/edma_dp/edma_v1/edma_tx_rx.c
-@@ -410,8 +410,12 @@ static uint32_t edma_clean_rx(struct edma_hw *ehw,
+@@ -410,8 +410,12 @@ static uint32_t edma_clean_rx(struct edm
  		if (unlikely(EDMA_RXPH_SERVICE_CODE_GET(rxph) ==
  					NSS_PTP_EVENT_SERVICE_CODE))
  			nss_phy_tstamp_rx_buf(ndev, skb);
@@ -58,6 +54,3 @@ index 5780a30..a002a79 100644
  
  next_rx_desc:
  		/*
--- 
-2.41.0
-

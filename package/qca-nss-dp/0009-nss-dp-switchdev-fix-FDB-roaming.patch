@@ -1,7 +1,7 @@
 From 25ca3308edb67aa0c6c70b83edf0e22b8ae7533f Mon Sep 17 00:00:00 2001
 From: Robert Marko <robimarko@gmail.com>
 Date: Thu, 29 Jun 2023 13:52:58 +0200
-Subject: [PATCH 9/9] nss-dp: switchdev: fix FDB roaming
+Subject: [PATCH] nss-dp: switchdev: fix FDB roaming
 
 Try and solve the roaming issue by trying to replicate what NSS bridge
 module is doing, but by utilizing switchdev FDB notifiers instead of
@@ -20,8 +20,6 @@ Signed-off-by: Robert Marko <robimarko@gmail.com>
  nss_dp_switchdev.c | 73 +++++++++++++++++++++++++++++++++++++++++++++-
  1 file changed, 72 insertions(+), 1 deletion(-)
 
-diff --git a/nss_dp_switchdev.c b/nss_dp_switchdev.c
-index c31fbb5..0bc28ce 100644
 --- a/nss_dp_switchdev.c
 +++ b/nss_dp_switchdev.c
 @@ -29,6 +29,8 @@
@@ -33,7 +31,7 @@ index c31fbb5..0bc28ce 100644
  
  #define NSS_DP_SWITCH_ID		0
  #define NSS_DP_SW_ETHTYPE_PID		0 /* PPE ethtype profile ID for slow protocols */
-@@ -521,7 +523,76 @@ static struct notifier_block *nss_dp_sw_ev_nb = &nss_dp_switchdev_notifier_nb;
+@@ -521,7 +523,76 @@ static struct notifier_block *nss_dp_sw_
  
  #else
  
@@ -111,6 +109,3 @@ index c31fbb5..0bc28ce 100644
  
  /*
   * nss_dp_bridge_attr_set()
--- 
-2.41.0
-

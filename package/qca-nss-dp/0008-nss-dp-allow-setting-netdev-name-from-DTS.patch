@@ -1,7 +1,7 @@
 From 53b044f7a21d5cd65ada90a228910e6efbad00fa Mon Sep 17 00:00:00 2001
 From: Robert Marko <robimarko@gmail.com>
 Date: Sun, 4 Dec 2022 18:41:36 +0100
-Subject: [PATCH 8/9] nss-dp: allow setting netdev name from DTS
+Subject: [PATCH 8/8] nss-dp: allow setting netdev name from DTS
 
 Allow reading the desired netdev name from DTS like DSA allows and then
 set it as the netdev name during registration.
@@ -13,11 +13,9 @@ Signed-off-by: Robert Marko <robimarko@gmail.com>
  nss_dp_main.c | 17 ++++++++++++++---
  1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/nss_dp_main.c b/nss_dp_main.c
-index d2fc47f..586ec95 100644
 --- a/nss_dp_main.c
 +++ b/nss_dp_main.c
-@@ -746,18 +746,29 @@ static int32_t nss_dp_probe(struct platform_device *pdev)
+@@ -746,18 +746,29 @@ static int32_t nss_dp_probe(struct platf
  	struct nss_dp_dev *dp_priv;
  	struct device_node *np = pdev->dev.of_node;
  	struct nss_gmac_hal_platform_data gmac_hal_pdata;
@@ -50,6 +48,3 @@ index d2fc47f..586ec95 100644
  		return -ENOMEM;
  	}
  
--- 
-2.41.0
-
