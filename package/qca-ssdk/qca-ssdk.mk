@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QCA_SSDK_VERSION = 74caf88aa3b6793c300f676e4fb1c62da7507be9
+QCA_SSDK_VERSION = 23a5aa4a4d5834da7a07efb58baebfbee91786b0
 QCA_SSDK_SITE = https://git.codelinaro.org/clo/qsdk/oss/lklm/qca-ssdk.git
 QCA_SSDK_SITE_METHOD = git
 QCA_SSDK_LICENSE = Dual BSD/GPL
@@ -16,11 +16,16 @@ QCA_SSDK_MODULE_MAKE_OPTS = \
 	SYS_PATH=$(LINUX_DIR) \
 	TOOLPREFIX=$(TOOLCHAIN_EXTERNAL_PREFIX)- \
 	TOOL_PATH=$(HOST_DIR)/bin/ \
-	GCC_VERSION=110200 \
+	GCC_VERSION=120300 \
 	CHIP_TYPE=HPPE \
 	PTP_FEATURE=disable \
 	SWCONFIG_FEATURE=disable \
-	EXTRA_CFLAGS=-fno-stack-protector \
+	ISISC_ENABLE=disable \
+	IN_QCA803X_PHY=FALSE \
+	IN_QCA808X_PHY=FALSE \
+	IN_MALIBU_PHY=FALSE \
+	EXTRA_CFLAGS="-fno-stack-protector" \
+	SoC="ipq807x" \
 	INSTALL_MOD_PATH=$(TARGET_DIR)
 
 LNX_CONFIG_OPTS = LNX_MAKEOPTS='$(LINUX_MAKE_FLAGS)' MODULE_TYPE=KSLIB modules

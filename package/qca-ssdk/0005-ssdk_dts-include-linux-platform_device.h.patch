@@ -1,0 +1,30 @@
+From bd805851d801b66fe6b6815dc741eb00aca3b391 Mon Sep 17 00:00:00 2001
+From: Robert Marko <robimarko@gmail.com>
+Date: Sat, 17 Feb 2024 13:09:51 +0100
+Subject: [PATCH 5/6] ssdk_dts: include <linux/platform_device.h>
+
+Headers received a cleanup in 6.8 so platform device struct is not being
+accidentally pulled in anymore and we need to include the required header.
+
+Signed-off-by: Robert Marko <robimarko@gmail.com>
+---
+ src/init/ssdk_dts.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/init/ssdk_dts.c b/src/init/ssdk_dts.c
+index 557951a7..0479a9d4 100644
+--- a/src/init/ssdk_dts.c
++++ b/src/init/ssdk_dts.c
+@@ -35,6 +35,9 @@
+ #if defined(MHT)
+ #include "mht_sec_ctrl.h"
+ #endif
++#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 8, 0))
++#include <linux/platform_device.h>
++#endif
+ #include <linux/of.h>
+ #include <linux/of_mdio.h>
+ #include <linux/of_platform.h>
+-- 
+2.43.2
+

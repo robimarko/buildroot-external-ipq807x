@@ -1,7 +1,7 @@
-From c7566a87e6661a0197ccf74a35565a2c89614361 Mon Sep 17 00:00:00 2001
+From 7c8f142a8b4bf3dee3427dab4c7960bc39259f54 Mon Sep 17 00:00:00 2001
 From: Robert Marko <robimarko@gmail.com>
 Date: Thu, 29 Sep 2022 19:54:26 +0200
-Subject: [PATCH 6/6] SSDK: install the kmod properly
+Subject: [PATCH 2/6] SSDK: install the kmod properly
 
 Call modules_install with the passed path after compilation so that kmod
 gets properly installed by the kernel and thus can be autoloaded and
@@ -33,5 +33,5 @@ index af29a7f1..2ecf2594 100755
  	cp temp/*.ko build/bin;
  	rm -Rf ./temp/*.o ./temp/*.ko ./temp/*.a
 -- 
-2.41.0
+2.43.2
 
