@@ -1,0 +1,50 @@
+From 181321d017d9fd89664488fa3ea1e912d2cd2753 Mon Sep 17 00:00:00 2001
+From: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+Date: Tue, 2 Apr 2024 22:27:15 -0500
+Subject: [PATCH 7/7] config: identify kernel 6.9
+
+It seems new kernel versions need explicit Makefile support.
+
+Signed-off-by: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+---
+ config            | 4 ++++
+ make/linux_opt.mk | 4 ++--
+ 2 files changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/config b/config
+index 6844a7f1..8da92706 100644
+--- a/config
++++ b/config
+@@ -32,6 +32,10 @@ ifeq ($(KVER),$(filter 6.8%,$(KVER)))
+ 	OS_VER=6_8
+ endif
+ 
++ifeq ($(KVER),$(filter 6.9%,$(KVER)))
++	OS_VER=6_9
++endif
++
+ ifeq ($(KVER), 3.4.0)
+ 	OS_VER=3_4
+ endif
+diff --git a/make/linux_opt.mk b/make/linux_opt.mk
+index 3b8d82f4..20da8400 100644
+--- a/make/linux_opt.mk
++++ b/make/linux_opt.mk
+@@ -450,7 +450,7 @@ ifeq (KSLIB, $(MODULE_TYPE))
+       KASAN_SHADOW_SCALE_SHIFT := 3
+   endif
+ 
+-  ifeq ($(OS_VER),$(filter 5_4 6_1 6_8, $(OS_VER)))
++  ifeq ($(OS_VER),$(filter 5_4 6_1 6_8 6_9, $(OS_VER)))
+       ifeq ($(ARCH), arm64)
+           KASAN_OPTION += -DKASAN_SHADOW_SCALE_SHIFT=$(KASAN_SHADOW_SCALE_SHIFT)
+        endif
+@@ -481,7 +481,7 @@ ifeq (KSLIB, $(MODULE_TYPE))
+ 
+   endif
+ 
+-  ifeq ($(OS_VER),$(filter 4_4 5_4 6_1 6_8, $(OS_VER)))
++  ifeq ($(OS_VER),$(filter 4_4 5_4 6_1 6_8 6_9, $(OS_VER)))
+                 MODULE_CFLAG += -DKVER34
+                 MODULE_CFLAG += -DKVER32
+             MODULE_CFLAG += -DLNX26_22
