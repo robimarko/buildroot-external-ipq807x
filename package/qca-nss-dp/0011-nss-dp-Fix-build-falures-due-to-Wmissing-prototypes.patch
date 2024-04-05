@@ -1,0 +1,113 @@
+From 34b48f95a3e5bb9f1a8afc8f40da3039371bdcce Mon Sep 17 00:00:00 2001
+From: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+Date: Sat, 23 Mar 2024 06:20:01 -0500
+Subject: [PATCH 11/13] nss-dp: Fix build falures due to -Wmissing-prototypes
+
+Some functions are only used iwthin the same file, and sould thus be
+declared static. For others, the correct header wasn't included. These
+error are exposed by the "-Wmissing-prototypes" compiler flag.
+
+Mark static functions as static, and include the correct headers for
+global functions.
+
+Signed-off-by: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+---
+ hal/dp_ops/edma_dp/edma_v1/edma_cfg.c |  2 +-
+ hal/gmac_ops/qcom/qcom_if.c           |  4 ++--
+ nss_dp_main.c                         | 10 +++++++---
+ 3 files changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/hal/dp_ops/edma_dp/edma_v1/edma_cfg.c b/hal/dp_ops/edma_dp/edma_v1/edma_cfg.c
+index f2542e8..fba67c4 100644
+--- a/hal/dp_ops/edma_dp/edma_v1/edma_cfg.c
++++ b/hal/dp_ops/edma_dp/edma_v1/edma_cfg.c
+@@ -714,7 +714,7 @@ static void edma_configure_rings(struct edma_hw *ehw)
+  * edma_hw_reset()
+  *	Reset EDMA Hardware during initialization
+  */
+-int edma_hw_reset(struct edma_hw *ehw)
++static int edma_hw_reset(struct edma_hw *ehw)
+ {
+ 	struct reset_control *rst;
+ 	struct platform_device *pdev = ehw->pdev;
+diff --git a/hal/gmac_ops/qcom/qcom_if.c b/hal/gmac_ops/qcom/qcom_if.c
+index 90afca1..40d4388 100644
+--- a/hal/gmac_ops/qcom/qcom_if.c
++++ b/hal/gmac_ops/qcom/qcom_if.c
+@@ -238,7 +238,7 @@ static int32_t qcom_get_netdev_stats(struct nss_gmac_hal_dev *nghd,
+  * qcom_get_strset_count()
+  *	Get string set count for ethtool operations
+  */
+-int32_t qcom_get_strset_count(struct nss_gmac_hal_dev *nghd, int32_t sset)
++static int32_t qcom_get_strset_count(struct nss_gmac_hal_dev *nghd, int32_t sset)
+ {
+ 	struct net_device *netdev = nghd->netdev;
+ 
+@@ -257,7 +257,7 @@ int32_t qcom_get_strset_count(struct nss_gmac_hal_dev *nghd, int32_t sset)
+  * qcom_get_strings()
+  *	Get strings
+  */
+-int32_t qcom_get_strings(struct nss_gmac_hal_dev *nghd, int32_t sset,
++static int32_t qcom_get_strings(struct nss_gmac_hal_dev *nghd, int32_t sset,
+ 						uint8_t *data)
+ {
+ 	struct net_device *netdev = nghd->netdev;
+diff --git a/nss_dp_main.c b/nss_dp_main.c
+index 006d519..615b0fe 100644
+--- a/nss_dp_main.c
++++ b/nss_dp_main.c
+@@ -16,6 +16,8 @@
+  * OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  */
+ 
++#include "nss_dp_dev.h"
++
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/version.h>
+@@ -706,7 +708,7 @@ bool nss_dp_is_phy_dev(struct net_device *dev)
+ /*
+  * nss_dp_adjust_link()
+  */
+-void nss_dp_adjust_link(struct net_device *netdev)
++static void nss_dp_adjust_link(struct net_device *netdev)
+ {
+ 	struct nss_dp_dev *dp_priv = netdev_priv(netdev);
+ 	int current_state = dp_priv->link_state;
+@@ -992,6 +994,7 @@ int32_t nss_dp_get_port_num(struct net_device *netdev)
+ }
+ EXPORT_SYMBOL(nss_dp_get_port_num);
+ 
++#ifdef NSS_DP_PPEDS_SUPPORT
+ /*
+  * nss_dp_ppeds_get_ops()
+  *	API to get PPE-DS operations
+@@ -1001,6 +1004,7 @@ struct nss_dp_ppeds_ops *nss_dp_ppeds_get_ops(void)
+ 	return nss_dp_ppeds_ops_get();
+ }
+ EXPORT_SYMBOL(nss_dp_ppeds_get_ops);
++#endif
+ 
+ /*
+  * nss_dp_nsm_sawf_sc_stats_read()
+@@ -1015,7 +1019,7 @@ EXPORT_SYMBOL(nss_dp_nsm_sawf_sc_stats_read);
+ /*
+  * nss_dp_init()
+  */
+-int __init nss_dp_init(void)
++static int __init nss_dp_init(void)
+ {
+ 	int ret;
+ 
+@@ -1076,7 +1080,7 @@ int __init nss_dp_init(void)
+ /*
+  * nss_dp_exit()
+  */
+-void __exit nss_dp_exit(void)
++static void __exit nss_dp_exit(void)
+ {
+ 	/*
+ 	 * TODO Move this to soc_ops
+-- 
+2.40.1
+
