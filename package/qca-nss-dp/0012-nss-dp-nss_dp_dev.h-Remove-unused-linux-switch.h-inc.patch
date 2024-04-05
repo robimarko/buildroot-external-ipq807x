@@ -1,0 +1,32 @@
+From 0ead1c5f2c144f557050e4ba1a4e80e6ac3c4cf5 Mon Sep 17 00:00:00 2001
+From: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+Date: Sat, 23 Mar 2024 06:30:48 -0500
+Subject: [PATCH 12/13] nss-dp: nss_dp_dev.h: Remove unused <linux/switch.h>
+ include
+
+The "linux/switch.h" header is specific to OpenWRT, and not part of
+the upstream kernel. Thus, when building for a generic kernel, this
+will cause a build failure.
+
+This header isn't used, so just don't include it.
+
+Signed-off-by: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+---
+ include/nss_dp_dev.h | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/include/nss_dp_dev.h b/include/nss_dp_dev.h
+index 5a8c0f7..c1edb49 100644
+--- a/include/nss_dp_dev.h
++++ b/include/nss_dp_dev.h
+@@ -22,7 +22,6 @@
+ #include <linux/etherdevice.h>
+ #include <linux/netdevice.h>
+ #include <linux/platform_device.h>
+-#include <linux/switch.h>
+ #include <linux/version.h>
+ #include <linux/ethtool.h>
+ 
+-- 
+2.40.1
+
