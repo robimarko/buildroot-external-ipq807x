@@ -1,6 +1,2 @@
 source "$BR2_EXTERNAL_QUALCOMMAX_PATH/package/ath11k-firmware/Config.in"
 source "$BR2_EXTERNAL_QUALCOMMAX_PATH/package/ath11k-bdf/Config.in"
-source "$BR2_EXTERNAL_QUALCOMMAX_PATH/package/qca-ssdk/Config.in"
-source "$BR2_EXTERNAL_QUALCOMMAX_PATH/package/qca-ssdk-shell/Config.in"
-source "$BR2_EXTERNAL_QUALCOMMAX_PATH/package/qca-nss-dp/Config.in"
-source "$BR2_EXTERNAL_QUALCOMMAX_PATH/package/qrtr/Config.in"

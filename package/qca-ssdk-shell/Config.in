@@ -1,6 +1,0 @@
-config BR2_PACKAGE_QCA_SSDK_SHELL
-	bool "Qualcomm SSDK shell"
-	depends on BR2_PACKAGE_QCA_SSDK
-	select BR2_PACKAGE_LIBBSD
-	help
-	  This package provides Qualcomm SSDK shell for debugging.
