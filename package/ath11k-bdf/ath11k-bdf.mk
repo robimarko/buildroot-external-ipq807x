@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ATH11K_BDF_VERSION = 33154283e54aeb515adb1661213884ed6979844a
+ATH11K_BDF_VERSION = a4bb9873649cfc5569ce7da4888cdb9b1296127d
 ATH11K_BDF_SITE = https://github.com/openwrt/firmware_qca-wireless.git
 ATH11K_BDF_SITE_METHOD = git
 ATH11K_BDF_LICENSE = Proprietary

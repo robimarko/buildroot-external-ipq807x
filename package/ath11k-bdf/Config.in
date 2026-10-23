@@ -11,11 +11,13 @@ choice
 
 config BR2_PACKAGE_ATH11K_BDF_301W
 	bool "Qnap 301W BDF"
+	depends on BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_11K_IPQ8074
 	help
 	  BDF file for Qnap 301W.
 
 config BR2_PACKAGE_ATH11K_BDF_AX9000
 	bool "Xiaomi AX9000 BDF"
+	depends on BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_11K_IPQ8074
 	help
 	  BDF file for Xiaomi AX9000.
 
