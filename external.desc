@@ -1,2 +1,2 @@
-name: IPQ807X
-desc: External buildroot tree for Qualcomm IPQ807x boards
+name: QUALCOMMAX
+desc: External buildroot tree for Qualcomm 802.11ax boards
